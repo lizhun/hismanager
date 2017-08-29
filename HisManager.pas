@@ -3,7 +3,7 @@ unit HisManager;
 interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,SOAPHTTPClient,Rio,StdCtrls,Dialogs,
-  InvokeRegistry,xmldom,XMLDoc,msxmldom,XMLIntf,HisEntity, StrUtils,
+  InvokeRegistry,xmldom,XMLDoc,msxmldom,XMLIntf,HisEntity, StrUtils,ADODB,DB,
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
   Buttons;//,xmldom,XMLDoc,msxml,XMLIntf
 type
@@ -25,6 +25,7 @@ type
                                                           //(5@医嘱大类) 6医嘱字典信息（按子类获取）6@医嘱子类)
     class   function  MGetPatInfo(AcardNo: string;AcardType:string): TStringList;//获取病人基本信息	28
     class   function  MSaveAntCVResult(ASaveAntCVResult: TSaveAntCVResult): Boolean;//保存危急值
+    class  function   SaveAntCVResultToDb(con:TADOConnection;data:TSaveAntCVResult):Boolean; //保存危急值到数据库
 
 
 
@@ -476,6 +477,68 @@ begin
         Result:=False;
     end;
 end;
+
+
+
+class function THisManager.SaveAntCVResultToDb(con:TADOConnection;data:TSaveAntCVResult):Boolean;
+var
+  query:TADOQuery;
+begin
+    query := TADOQuery.Create(nil);
+    query.Connection := con;
+    query.SQL.Text := 'Insert into TB_AckAntCVResult '+
+    '(AntCVResultID,ReportType,StudyNo,OrdRowID,AuditDate,AuditTime,AuditDocCode,AuditDocname,'+
+    'AuditComment,OrdName,Result,Ranges,OrdDoc,OrdDate,OrdTime,ColDoc, '+
+    'ColDate,ColTime,RecDoc,RecDate,RecTime,WarDate,WarTime,CheckDoc,CheckDate, '+
+    'CheckTime,ReportDoc,ReportDate,ReportTime,SpecType,Comment,Note,Status,LastUpateTime) '+
+      'VALUES '+
+    '(:AntCVResultID,:ReportType,:StudyNo,:OrdRowID,:AuditDate,:AuditTime,:AuditDocCode,:AuditDocname,'+
+    ':AuditComment,:OrdName,:Result,:Ranges,:OrdDoc,:OrdDate,:OrdTime,:ColDoc,'+
+    ':ColDate,:ColTime,:RecDoc,:RecDate,:RecTime,:WarDate,:WarTime,:CheckDoc,:CheckDate,'+
+    ':CheckTime,:ReportDoc,:ReportDate,:ReportTime,:SpecType,:Comment,:Note,:Status,:LastUpateTime)';
+
+    query.Parameters.ParamByName('AntCVResultID').value:=data.AntCVResultID ;
+    query.Parameters.ParamByName('ReportType').value:=data.ReportType ;
+    query.Parameters.ParamByName('StudyNo').value:=data.StudyNo;
+    query.Parameters.ParamByName('OrdRowID').value:=data.OrdRowID;
+    query.Parameters.ParamByName('AuditDate').value:=data.AuditDate;
+    query.Parameters.ParamByName('AuditTime').value:=data.AuditTime;
+    query.Parameters.ParamByName('AuditDocCode').value:=data.AuditDocCode;
+    query.Parameters.ParamByName('AuditDocname').value:=data.AuditDocname;
+    query.Parameters.ParamByName('AuditComment').value:=data.AuditComment;
+    query.Parameters.ParamByName('OrdName').value:=data.OrdName;
+    query.Parameters.ParamByName('Result').value:=data.Result ;
+    query.Parameters.ParamByName('Ranges').value:=data.Ranges;
+    query.Parameters.ParamByName('OrdDoc').value:=data.OrdDoc;
+    query.Parameters.ParamByName('OrdDate ').value:=data.OrdDate ;
+    query.Parameters.ParamByName('OrdTime').value:=data.OrdTime ;
+    query.Parameters.ParamByName('ColDoc').value:=data.ColDoc;
+    query.Parameters.ParamByName('ColDate').value:=data.ColDate;
+    query.Parameters.ParamByName('ColTime').value:=data.ColTime;
+    query.Parameters.ParamByName('RecDoc').value:=data.RecDoc;
+    query.Parameters.ParamByName('RecDate').value:=data.RecDate;
+    query.Parameters.ParamByName('RecTime').value:=data.RecTime;
+    query.Parameters.ParamByName('WarDate').value:=data.WarDate;
+    query.Parameters.ParamByName('WarTime').value:=data.WarTime;
+    query.Parameters.ParamByName('CheckDoc').value:=data.CheckDoc;
+    query.Parameters.ParamByName('CheckDate').value:=data.CheckDate;
+    query.Parameters.ParamByName('CheckTime').value:=data.CheckTime;
+    query.Parameters.ParamByName('ReportDoc').value:=data.ReportDoc;
+    query.Parameters.ParamByName('ReportDate').value:=data.ReportDate;
+    query.Parameters.ParamByName('ReportTime').value:=data.ReportTime;
+    query.Parameters.ParamByName('SpecType').value:=data.SpecType ;
+    query.Parameters.ParamByName('Comment').value:=data.Comment ;
+    query.Parameters.ParamByName('Status').DataType:=ftInteger;
+    query.Parameters.ParamByName('Status').value:=data.Status;
+    query.Parameters.ParamByName('LastUpateTime').DataType:=ftDateTime;
+    query.Parameters.ParamByName('LastUpateTime').value:=Now;
+    query.Prepared := True;
+    query.ExecSQL;
+    query.Free;
+    query:=nil;
+    Result:=True;
+end;
+
 
 
 end.

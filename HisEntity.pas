@@ -206,6 +206,11 @@ type
     SpecType	:string;//	标本类型
     Comment	:string;//	危机说明
     Note	:string;//	备注
+    Status :Integer;
+    SendUser:string;
+    SendUserCode:string;
+    LastUpateTime  :TDateTime ;
+    CreateTime  :TDateTime;
 
 end;
 
