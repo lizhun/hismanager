@@ -181,7 +181,7 @@ type
     AuditDate	:string;//	危急值发送日期     YYYY-MM-DD
     AuditTime	:string;//	危急值发送时间     HH:MM:SS
     AuditDocCode	:string;//	危急值发送人工号      取不到的可暂为空
-    AuditDocname:string;       //危急值发送人姓名    张三
+    AuditDocName:string;       //危急值发送人姓名    张三
     AuditComment	:string;//     审核说明
     OrdName	:string;//	提醒内容
     Result	:string;//	危急值结果内容

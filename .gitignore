@@ -262,3 +262,9 @@ __pycache__/
 *.dll
 *.~pas
 *.dcu
+*.res
+*.cfg
+*.pof
+*.dof
+*.~dfm
+*.~dpr

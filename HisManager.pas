@@ -26,7 +26,7 @@ type
     class   function  MGetPatInfo(AcardNo: string;AcardType:string): TStringList;//获取病人基本信息	28
     class   function  MSaveAntCVResult(ASaveAntCVResult: TSaveAntCVResult): Boolean;//保存危急值
     class  function   SaveAntCVResultToDb(con:TADOConnection;data:TSaveAntCVResult):Boolean; //保存危急值到数据库
-
+    class function   MMakeSaveAntCVResultStr(ASaveAntCVResult: TSaveAntCVResult): WideString;
 
 
  end;
@@ -421,8 +421,8 @@ end;
 
 class function THisManager.MSaveAntCVResult(ASaveAntCVResult: TSaveAntCVResult): Boolean;
   var
-     resultstr :WideString;
-    xml :IXMLDocument;
+   resultstr :WideString;
+   xml :IXMLDocument;
    ansistr:string;
 begin
     try
@@ -478,6 +478,49 @@ begin
     end;
 end;
 
+class function THisManager.MMakeSaveAntCVResultStr(ASaveAntCVResult: TSaveAntCVResult): WideString;
+  var
+   resultstr :WideString;
+   xml :IXMLDocument;
+   ansistr:string;
+begin
+        resultstr := '<Request><SaveAntCVResults><SaveAntCVResult>';
+        resultstr :=resultstr+'<AntCVResultID>'+ASaveAntCVResult.AntCVResultID+'</AntCVResultID>';
+        resultstr :=resultstr+'<ReportType>'+ASaveAntCVResult.ReportType+'</ReportType>';
+        resultstr :=resultstr+'<StudyNo>'+ASaveAntCVResult.StudyNo+'</StudyNo>';
+        resultstr :=resultstr+'<OrdRowID>'+ASaveAntCVResult.OrdRowID+'</OrdRowID>';
+        resultstr :=resultstr+'<AuditDate>'+ASaveAntCVResult.AuditDate+'</AuditDate>';
+        resultstr :=resultstr+'<AuditTime>'+ASaveAntCVResult.AuditTime+'</AuditTime>';
+        resultstr :=resultstr+'<AuditDocCode>'+ASaveAntCVResult.AuditDocCode+'</AuditDocCode>';
+        resultstr :=resultstr+'<AuditDocname>'+ASaveAntCVResult.AuditDocname+'</AuditDocname>';
+        resultstr :=resultstr+'<AuditComment>'+ASaveAntCVResult.AuditComment+'</AuditComment>';
+        resultstr :=resultstr+'<OrdName>'+ASaveAntCVResult.OrdName+'</OrdName>';
+        resultstr :=resultstr+'<Result>'+ASaveAntCVResult.Result+'</Result>';
+        resultstr :=resultstr+'<Ranges>'+ASaveAntCVResult.Ranges+'</Ranges>';
+        resultstr :=resultstr+'<OrdDoc>'+ASaveAntCVResult.OrdDoc+'</OrdDoc>';
+        resultstr :=resultstr+'<OrdDate>'+ASaveAntCVResult.OrdDate+'</OrdDate>';
+        resultstr :=resultstr+'<OrdTime>'+ASaveAntCVResult.OrdTime+'</OrdTime>';
+        resultstr :=resultstr+'<ColDoc>'+ASaveAntCVResult.ColDoc+'</ColDoc>';
+        resultstr :=resultstr+'<ColDate>'+ASaveAntCVResult.ColDate+'</ColDate>';
+        resultstr :=resultstr+'<ColTime>'+ASaveAntCVResult.ColTime+'</ColTime>';
+        resultstr :=resultstr+'<RecDoc>'+ASaveAntCVResult.RecDoc+'</RecDoc>';
+        resultstr :=resultstr+'<RecDate>'+ASaveAntCVResult.RecDate+'</RecDate>';
+        resultstr :=resultstr+'<RecTime>'+ASaveAntCVResult.RecTime+'</RecTime>';
+        resultstr :=resultstr+'<WarDate>'+ASaveAntCVResult.WarDate+'</WarDate>';
+        resultstr :=resultstr+'<WarTime>'+ASaveAntCVResult.WarTime+'</WarTime>';
+        resultstr :=resultstr+'<CheckDoc>'+ASaveAntCVResult.CheckDoc+'</CheckDoc>';
+        resultstr :=resultstr+'<CheckDate>'+ASaveAntCVResult.CheckDate+'</CheckDate>';
+        resultstr :=resultstr+'<CheckTime>'+ASaveAntCVResult.CheckTime+'</CheckTime>';
+        resultstr :=resultstr+'<ReportDoc>'+ASaveAntCVResult.ReportDoc+'</ReportDoc>';
+        resultstr :=resultstr+'<ReportDate>'+ASaveAntCVResult.ReportDate+'</ReportDate>';
+        resultstr :=resultstr+'<ReportTime>'+ASaveAntCVResult.ReportTime+'</ReportTime>';
+        resultstr :=resultstr+'<SpecType>'+ASaveAntCVResult.SpecType+'</SpecType>';
+        resultstr :=resultstr+'<Comment>'+ASaveAntCVResult.Comment+'</Comment>';
+        resultstr :=resultstr+'<Note>'+ASaveAntCVResult.Note+'</Note>';
+        resultstr :=resultstr+'</SaveAntCVResult></SaveAntCVResults></Request>';
+       Result:=   resultstr;
+end;
+
 
 
 class function THisManager.SaveAntCVResultToDb(con:TADOConnection;data:TSaveAntCVResult):Boolean;
@@ -486,6 +529,12 @@ var
 begin
     query := TADOQuery.Create(nil);
     query.Connection := con;
+    query.SQL.Text :='delete from TB_AckAntCVResult where StudyNo=:StudyNo';
+    query.Parameters.ParamByName('StudyNo').value:=data.StudyNo;
+    query.Prepared := True;
+    query.ExecSQL;
+    query.SQL.Clear;
+    query.Parameters.Clear;
     query.SQL.Text := 'Insert into TB_AckAntCVResult '+
     '(AntCVResultID,ReportType,StudyNo,OrdRowID,AuditDate,AuditTime,AuditDocCode,AuditDocname,'+
     'AuditComment,OrdName,Result,Ranges,OrdDoc,OrdDate,OrdTime,ColDoc, '+
@@ -504,13 +553,13 @@ begin
     query.Parameters.ParamByName('AuditDate').value:=data.AuditDate;
     query.Parameters.ParamByName('AuditTime').value:=data.AuditTime;
     query.Parameters.ParamByName('AuditDocCode').value:=data.AuditDocCode;
-    query.Parameters.ParamByName('AuditDocname').value:=data.AuditDocname;
+    query.Parameters.ParamByName('AuditDocName').value:=data.AuditDocname;
     query.Parameters.ParamByName('AuditComment').value:=data.AuditComment;
     query.Parameters.ParamByName('OrdName').value:=data.OrdName;
     query.Parameters.ParamByName('Result').value:=data.Result ;
     query.Parameters.ParamByName('Ranges').value:=data.Ranges;
     query.Parameters.ParamByName('OrdDoc').value:=data.OrdDoc;
-    query.Parameters.ParamByName('OrdDate ').value:=data.OrdDate ;
+    query.Parameters.ParamByName('OrdDate').value:=data.OrdDate ;
     query.Parameters.ParamByName('OrdTime').value:=data.OrdTime ;
     query.Parameters.ParamByName('ColDoc').value:=data.ColDoc;
     query.Parameters.ParamByName('ColDate').value:=data.ColDate;
