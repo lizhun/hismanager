@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 495
-  Top = 231
+  Left = 327
+  Top = 152
   Width = 1119
   Height = 751
   Caption = 'Form1'
@@ -421,6 +421,7 @@ object Form1: TForm1
     Height = 25
     Caption = #21457#36865'XML'#21361#24613#20540#33267'HIS   '
     TabOrder = 40
+    OnClick = btn_sendXmlClick
   end
   object con1: TADOConnection
     Left = 352

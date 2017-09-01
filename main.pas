@@ -55,6 +55,7 @@ type
     function getData:TSaveAntCVResult;
     procedure btn_localDBClick(Sender: TObject);
     procedure btn_DBTestClick(Sender: TObject);
+    procedure btn_sendXmlClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -63,8 +64,11 @@ type
 
 var
   Form1: TForm1;
+  function  SaveAntCVResult(const Input: PWideChar): PWideChar; stdcall;external 'HISDHC.dll';
 
 implementation
+
+
 uses
   HisManager;
 
@@ -176,4 +180,15 @@ begin
     con := nil;
 end;
 
+procedure TForm1.btn_sendXmlClick(Sender: TObject);
+var
+  xmlstr:WideString;
+  resultstr:WideString;
+begin
+  xmlstr:=mmo_request.Text;
+  resultstr:=SaveAntCVResult(PWideChar(xmlstr));
+  ShowMessage(resultstr);
+end;
+
 end.
+
