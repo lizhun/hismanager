@@ -268,3 +268,4 @@ __pycache__/
 *.dof
 *.~dfm
 *.~dpr
+*.exe
