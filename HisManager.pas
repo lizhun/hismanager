@@ -526,26 +526,39 @@ end;
 class function THisManager.SaveAntCVResultToDb(con:TADOConnection;data:TSaveAntCVResult):Boolean;
 var
   query:TADOQuery;
+  count:Integer;
 begin
     query := TADOQuery.Create(nil);
     query.Connection := con;
-    query.SQL.Text :='delete from TB_AckAntCVResult where StudyNo=:StudyNo';
+    query.SQL.Text :='select 1 from TB_AckAntCVResult where StudyNo=:StudyNo';
     query.Parameters.ParamByName('StudyNo').value:=data.StudyNo;
     query.Prepared := True;
-    query.ExecSQL;
+    query.Open;
+    count  :=query.Recordset.RecordCount;
+    query.Close;
     query.SQL.Clear;
-    query.Parameters.Clear;
-    query.SQL.Text := 'Insert into TB_AckAntCVResult '+
-    '(AntCVResultID,ReportType,StudyNo,OrdRowID,AuditDate,AuditTime,AuditDocCode,AuditDocname,'+
-    'AuditComment,OrdName,Result,Ranges,OrdDoc,OrdDate,OrdTime,ColDoc, '+
-    'ColDate,ColTime,RecDoc,RecDate,RecTime,WarDate,WarTime,CheckDoc,CheckDate, '+
-    'CheckTime,ReportDoc,ReportDate,ReportTime,SpecType,Comment,Note,Status,LastUpateTime) '+
-      'VALUES '+
-    '(:AntCVResultID,:ReportType,:StudyNo,:OrdRowID,:AuditDate,:AuditTime,:AuditDocCode,:AuditDocname,'+
-    ':AuditComment,:OrdName,:Result,:Ranges,:OrdDoc,:OrdDate,:OrdTime,:ColDoc,'+
-    ':ColDate,:ColTime,:RecDoc,:RecDate,:RecTime,:WarDate,:WarTime,:CheckDoc,:CheckDate,'+
-    ':CheckTime,:ReportDoc,:ReportDate,:ReportTime,:SpecType,:Comment,:Note,:Status,:LastUpateTime)';
+    query.Parameters.Clear; 
+    if    count>0     then
+    begin
+        query.SQL.Text :='update TB_AckAntCVResult set AntCVResultID=:AntCVResultID,ReportType=:ReportType,StudyNo=:StudyNo,OrdRowID=:OrdRowID,AuditDate=:AuditDate,AuditTime=:AuditTime,AuditDocCode=:AuditDocCode,AuditDocName=:AuditDocName,'+
+        'AuditComment=:AuditComment,OrdName=:OrdName,Result=:Result,Ranges=:Ranges,OrdDoc=:OrdDoc,OrdDate=:OrdDate,OrdTime=:OrdTime,ColDoc=:ColDoc, '+
+        'ColDate=:ColDate,ColTime=:ColTime,RecDoc=:RecDoc,RecDate=:RecDate,RecTime=:RecTime,WarDate=:WarDate,WarTime=:WarTime,CheckDoc=:CheckDoc,CheckDate=:CheckDate, '+
+        'CheckTime=:CheckTime,ReportDoc=:ReportDoc,ReportDate=:ReportDate,ReportTime=:ReportTime,SpecType=:SpecType,Comment=:Comment,Note=:Note,Status=:Status,LastUpateTime=:LastUpateTime where StudyNo=:StudyNo; ';
 
+    end
+    else
+    begin
+        query.SQL.Text :='Insert into TB_AckAntCVResult '+
+         '(AntCVResultID,ReportType,StudyNo,OrdRowID,AuditDate,AuditTime,AuditDocCode,AuditDocName,'+
+         'AuditComment,OrdName,Result,Ranges,OrdDoc,OrdDate,OrdTime,ColDoc, '+
+         'ColDate,ColTime,RecDoc,RecDate,RecTime,WarDate,WarTime,CheckDoc,CheckDate, '+
+        'CheckTime,ReportDoc,ReportDate,ReportTime,SpecType,Comment,Note,Status,LastUpateTime) '+
+         'VALUES '+
+         '(:AntCVResultID,:ReportType,:StudyNo,:OrdRowID,:AuditDate,:AuditTime,:AuditDocCode,:AuditDocName,'+
+         ':AuditComment,:OrdName,:Result,:Ranges,:OrdDoc,:OrdDate,:OrdTime,:ColDoc,'+
+         ':ColDate,:ColTime,:RecDoc,:RecDate,:RecTime,:WarDate,:WarTime,:CheckDoc,:CheckDate,'+
+         ':CheckTime,:ReportDoc,:ReportDate,:ReportTime,:SpecType,:Comment,:Note,:Status,:LastUpateTime); ';
+    end;
     query.Parameters.ParamByName('AntCVResultID').value:=data.AntCVResultID ;
     query.Parameters.ParamByName('ReportType').value:=data.ReportType ;
     query.Parameters.ParamByName('StudyNo').value:=data.StudyNo;
@@ -553,7 +566,7 @@ begin
     query.Parameters.ParamByName('AuditDate').value:=data.AuditDate;
     query.Parameters.ParamByName('AuditTime').value:=data.AuditTime;
     query.Parameters.ParamByName('AuditDocCode').value:=data.AuditDocCode;
-    query.Parameters.ParamByName('AuditDocName').value:=data.AuditDocname;
+    query.Parameters.ParamByName('AuditDocName').value:=data.AuditDocName;
     query.Parameters.ParamByName('AuditComment').value:=data.AuditComment;
     query.Parameters.ParamByName('OrdName').value:=data.OrdName;
     query.Parameters.ParamByName('Result').value:=data.Result ;
@@ -578,10 +591,11 @@ begin
     query.Parameters.ParamByName('SpecType').value:=data.SpecType ;
     query.Parameters.ParamByName('Comment').value:=data.Comment ;
     query.Parameters.ParamByName('Status').DataType:=ftInteger;
-    query.Parameters.ParamByName('Status').value:=data.Status;
+    query.Parameters.ParamByName('Status').value:=1;
     query.Parameters.ParamByName('LastUpateTime').DataType:=ftDateTime;
     query.Parameters.ParamByName('LastUpateTime').value:=Now;
     query.Prepared := True;
+
     query.ExecSQL;
     query.Free;
     query:=nil;

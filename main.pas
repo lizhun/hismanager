@@ -142,8 +142,7 @@ begin
     data.Comment := lbledtComment.Text;
     data.Note := lbledtNote.Text;
     data.SendUser := 'tester';
-    data.SendUserCode := 'testcode';
-    data.Status := 1;
+    data.SendUserCode := 'testcode'; 
     Result:=data;
     data:= nil;
 end;

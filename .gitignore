@@ -269,3 +269,5 @@ __pycache__/
 *.~dfm
 *.~dpr
 *.exe
+*.ddp
+*.~ddp
