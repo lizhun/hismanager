@@ -492,7 +492,7 @@ begin
         resultstr :=resultstr+'<AuditDate>'+ASaveAntCVResult.AuditDate+'</AuditDate>';
         resultstr :=resultstr+'<AuditTime>'+ASaveAntCVResult.AuditTime+'</AuditTime>';
         resultstr :=resultstr+'<AuditDocCode>'+ASaveAntCVResult.AuditDocCode+'</AuditDocCode>';
-        resultstr :=resultstr+'<AuditDocname>'+ASaveAntCVResult.AuditDocname+'</AuditDocname>';
+        resultstr :=resultstr+'<AuditDocName>'+ASaveAntCVResult.AuditDocname+'</AuditDocName>';
         resultstr :=resultstr+'<AuditComment>'+ASaveAntCVResult.AuditComment+'</AuditComment>';
         resultstr :=resultstr+'<OrdName>'+ASaveAntCVResult.OrdName+'</OrdName>';
         resultstr :=resultstr+'<Result>'+ASaveAntCVResult.Result+'</Result>';
