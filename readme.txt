@@ -2,8 +2,8 @@
 数据库需建立TB_AckAntCVResult表
   
 接口说明：
-MSaveAntCVResult(ASaveAntCVResult: TSaveAntCVResult): Boolean;//保存危急值至HIS 类TSaveAntCVResult在HisEntity文件里面
-SaveAntCVResultToDb(con:TADOConnection;data:TSaveAntCVResult):Boolean; //保存危急值到数据库
+THisManager.MSaveAntCVResult(ASaveAntCVResult: TSaveAntCVResult): Boolean;//保存危急值至HIS 类TSaveAntCVResult在HisEntity文件里面
+THisManager.SaveAntCVResultToDb(con:TADOConnection;data:TSaveAntCVResult):Boolean; //保存危急值到数据库
 
 附
    1.每一个检查类型的数据库都需建一张保存危急值的表

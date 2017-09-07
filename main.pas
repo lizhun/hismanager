@@ -80,15 +80,15 @@ var
     con:TADOConnection;
 begin
     data:=getData;
-    con:=getcon;
-    mmo_request.Text := THisManager.MMakeSaveAntCVResultStr(data);
-    THisManager.SaveAntCVResultToDb(con,data);
-
-    con.Close;
-    con.Free;
-    con := nil;
-  //THisManager.MSaveAntCVResult()
-
+     mmo_request.Text := THisManager.MMakeSaveAntCVResultStr(data);
+     if THisManager.MSaveAntCVResult(data) then
+     begin
+        ShowMessage('³É¹¦');
+     end
+     else
+     begin
+         ShowMessage('Ê§°Ü');
+     end; 
 end;
 
 function TForm1.getcon:TADOConnection;
@@ -156,7 +156,6 @@ begin
     con:=getcon;
     mmo_request.Text := THisManager.MMakeSaveAntCVResultStr(data);
     THisManager.SaveAntCVResultToDb(con,data);
-
     con.Close;
     con.Free;
     con := nil;

@@ -25,8 +25,8 @@ type
                                                           //(5@医嘱大类) 6医嘱字典信息（按子类获取）6@医嘱子类)
     class   function  MGetPatInfo(AcardNo: string;AcardType:string): TStringList;//获取病人基本信息	28
     class   function  MSaveAntCVResult(ASaveAntCVResult: TSaveAntCVResult): Boolean;//保存危急值
-    class  function   SaveAntCVResultToDb(con:TADOConnection;data:TSaveAntCVResult):Boolean; //保存危急值到数据库
-    class function   MMakeSaveAntCVResultStr(ASaveAntCVResult: TSaveAntCVResult): WideString;
+    class   function   SaveAntCVResultToDb(con:TADOConnection;data:TSaveAntCVResult):Boolean; //保存危急值到数据库
+    class   function   MMakeSaveAntCVResultStr(ASaveAntCVResult: TSaveAntCVResult): WideString;
 
 
  end;
