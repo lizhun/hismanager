@@ -27,6 +27,7 @@ type
     class   function  MSaveAntCVResult(ASaveAntCVResult: TSaveAntCVResult): Boolean;//保存危急值
     class   function   SaveAntCVResultToDb(con:TADOConnection;data:TSaveAntCVResult):Boolean; //保存危急值到数据库
     class   function   MMakeSaveAntCVResultStr(ASaveAntCVResult: TSaveAntCVResult): WideString;
+    class   function   MRegisterDocument(ARegisterDocument: TRegisterDocument): Boolean;
 
 
  end;
@@ -44,8 +45,8 @@ implementation
     function  RegInfo(const Input: PWideChar): PWideChar; stdcall; external 'HISDHC.dll';
     function  ReturnReports(const Input: PWideChar): PWideChar; stdcall; external 'HISDHC.dll';
     function  SendPatOrdListToRis(const Input: PWideChar): PWideChar; stdcall; external 'HISDHC.dll';
-    function  TestReturnReports(const Input: PWideChar): PWideChar; stdcall;external 'HISDHC.dll';
     function  SaveAntCVResult(const Input: PWideChar): PWideChar; stdcall;external 'HISDHC.dll';
+    function  DHCWebInterface(const Input: PWideChar;const Input1: PWideChar): PWideChar; stdcall;external 'HISDHC.dll';
 
 { THisManager }
 
@@ -602,6 +603,15 @@ begin
     Result:=True;
 end;
 
+class function THisManager.MRegisterDocument(ARegisterDocument: TRegisterDocument): Boolean;
+  var
+   resultstr :WideString;
+   xml :IXMLDocument;
+   ansistr:string;
+begin
+   resultstr := '<Request><SaveAntCVResults><SaveAntCVResult>';
+   Result:=True;
+end;
 
 
 end.

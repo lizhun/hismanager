@@ -211,10 +211,101 @@ type
     SendUserCode:string;
     LastUpateTime  :TDateTime ;
     CreateTime  :TDateTime;
-
 end;
 
+type
+  TDiagnoseRowInfo=class
+  DiagnoseCode	:string;      //疾病诊断编码
+  DiagnoseDesc	:string;      //疾病诊断描述
+  DiagnoseTypeCode	:string;  //疾病诊断类型代码
+  DiagnoseTypeDesc	:string;  //疾病诊断类型描述
+  DiagnoseDate	:string;      //诊断日期
+end;
+
+TArrayTDiagnoseRowInfo  =array of TDiagnoseRowInfo;
+
+type
+    TRegisterDocument = class
+    ZYH	:string;            // 住院号
+    DZSQDBH	:string;        // 电子申请单编号
+    HZSFZH	:string;        // 患者身份证号
+    MJZH	:string;          // 门（急）诊号
+    NL_Year	:string;        // 年龄（岁）
+    NL_Month	:string;      // 年龄（月）
+    Phone	:string;          // 电话号码
+    XB_Code:string;         // 性别代码
+    XB_Name:string;         // 性别名称
+    HZLX_Code	:string;      // 患者类型代码
+    HZLX_Des	:string;      // 患者类型描述
+    HZ_Name	:string;        // 患者姓名
+    BC_Number	:string;      // 病床号
+    BF_Number	:string;      // 病房号
+    BF_Code	:string;        // 病房代码
+    BQ_Name	:string;        // 病区名称
+    BQ_Code	:string;        // 病区代码
+    KS_Name:string;         // 科室名称
+    KS_Code:string;         // 科室代码
+    YLJGZZJG_Code	:string;  // 医疗机构组织机构代码
+    JCSQJG_Name	:string;    // 检查申请机构名称
+    JCBGJG_Name	:string;    // 检查报告机构名称
+    ZDJG_Name	:string;      // 诊断机构名称
+    JC_Type	:string;        // 检查类别
+    JCBGKS	:string;        // 检查报告科室
+    JCBGKS_Code	:string;    // 检查报告科室代码
+    JCSQKS:string;          // 检查申请科室
+    JCSQKS_Code	:string;    // 检查申请科室代码
+    JCBGDBH	:string;        // 检查报告单编号
+    JCJSQM	:string;        // 检查技师签名
+    JCJSQM_Code	:string;    // 检查技师签名代码
+    JCJG_Code	:string;      // 检查结果代码
+    JCJG_Des	:string;      // 检查结果描述
+    JC_Date	:string;        // 检查日期
+    JCXM_Code	:string;      // 检查项目代码
+    JCXM_Des	:string;      // 检查项目描述
+    JCBGBZ :string;         // 检查报告备注
+    JCBGJG_KGSJ:string;     // 检查报告结果-客观所见
+    JCBGJG_ZGTS:string;     // 检查报告结果-主观提示
+    JCFF_Name  :string ;    // 检查方法名称
+    JCBG_Date  :string;     // 检查报告日期
+    JCYSQM  :string;        // 检查医师签名
+    JCYSQM_Code  :string;   // 检查医师签名代码
+    BGYSQM  :string;        // 报告医师签名
+    BGYSQM_Code  :string;   // 报告医师签名代码
+    SHYSQM  :string;        // 审核医师签名
+    SHYSQM_Code  :string;   // 审核医师签名代码
+    BBCY_Date	:string;      // 标本采样日期时间
+    BBGDY_Name	:string;    // 标本固定液名称
+    BB_Type	:string;        // 标本类别
+    BB_Status	:string;      // 标本状态
+    CZ_Code	:string;        // 操作编码
+    CZBW_Code	:string;      // 操作部位编码
+    CZCS	:string;          // 操作次数
+    CZFF_Des	:string;      // 操作方法描述
+    CZ_Name	:string;        // 操作名称
+    CZ_Date	:string;        // 操作日期时间
+    JCBB_Number	:string;    // 检查标本号
+    JCDLJG	:string;        // 检查定量结果
+    JCDLJG_Unit	:string;    // 检查定量结果计量单位
+    JSBB_Date	:string;      // 接收标本日期时间
+    JRW_Name	:string;      // 介入物名称
+    MZFF_Code	:string;      // 麻醉方法代码
+    MZGCJG	:string;        // 麻醉观察结果
+    MZYSQM	:string;        // 麻醉医师签名
+    MZZXYBS_Code	:string;  // 麻醉中西医标识代码
+    TSJCBZ	:string;        // 特殊检查标志
+    ZLGC_des	:string;      // 诊疗过程描述
+    ZZ_StartDate	:string;  // 症状开始日期时间
+    ZZ_Des	:string;        // 症状描述
+    ZZ_StopDate	:string;    // 症状停止日期时间
+    ZS	:string;            // 主诉
+    DiagnoseRowInfo: TArrayTDiagnoseRowInfo //患者诊断信息数组
+end;
+
+
+
 TArrayTPatOrd  =array of TPatOrd;
+
+
 implementation
 
 end.
