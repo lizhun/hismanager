@@ -1,9 +1,9 @@
-object Form1: TForm1
-  Left = 145
-  Top = 165
+object WJZForm: TWJZForm
+  Left = 379
+  Top = 215
   Width = 1119
   Height = 751
-  Caption = 'Form1'
+  Caption = 'WJZForm'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText

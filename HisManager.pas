@@ -29,6 +29,7 @@ type
     class function SaveAntCVResultToDb(con: TADOConnection; data: TSaveAntCVResult): Boolean; //保存危急值到数据库
     class function MMakeSaveAntCVResultStr(ASaveAntCVResult: TSaveAntCVResult): WideString;
     class function MRegisterDocument(ARegisterDocument: TRegisterDocument): Boolean;
+    class function MValidateTicket(const Asourcing: string;const Atickets: string; const Acode: string): Boolean;
   end;
 
 implementation
@@ -600,11 +601,13 @@ end;
 class function THisManager.MRegisterDocument(ARegisterDocument: TRegisterDocument): Boolean;
 var
   resultstr: WideString;
+  msgCode: WideString;
   xml: IXMLDocument;
   ansistr: string;
   len: Integer;
   i: Integer;
 begin
+
   resultstr := '<BasicDataset code="HDSD00.05" displayName="检查报告" codeSystem="WSXXX-2012" codeSystemName="电子病历基本数据集" version="1.0">';
   resultstr := resultstr + '<HDSD00_05_078 dataelementCode="HDSD00.05.078" dataelementName="住院号" value="' + ARegisterDocument.ZYH + '"></HDSD00_05_078>';
   resultstr := resultstr + '<HDSD00_05_016 dataelementCode="HDSD00.05.016" dataelementName="电子申请单编号" value="' + ARegisterDocument.DZSQDBH + '"></HDSD00_05_016>';
@@ -692,7 +695,56 @@ begin
   end;
   resultstr := resultstr + '</DiagnoseRowInfo>';
   resultstr := resultstr + '</BasicDataset>';
-  Result := True;
+  try
+    msgCode := 'RegisterDocument';
+    resultstr := DHCWebInterface(PWideChar(msgCode), PWideChar(resultstr));
+    resultstr := LeftStr(resultstr, Length(resultstr) - 3);
+    resultstr := RightStr(resultstr, Length(resultstr) - 9);
+    ansistr := UTF8Encode(resultstr);
+    xml := LoadXMLData(ansistr);
+    if (xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['ResultCode'].text = '0') then
+    begin
+      Result := True;
+    end
+    else
+    begin
+      Result := False;
+    end;
+  except
+    Result := False;
+  end;
+end;
+
+class function THisManager.MValidateTicket(const Asourcing: string; const Atickets: string; const Acode: string): Boolean;
+var
+  resultstr: WideString;
+  msgCode: WideString;
+  xml: IXMLDocument;
+  ansistr: string;
+begin
+  try
+    resultstr := '<Request>';
+    resultstr := resultstr + '<SourceSystem>'+Asourcing+'</SourceSystem>';
+    resultstr := resultstr + '<Ptickets>' + Atickets + '</Ptickets>';
+    resultstr := resultstr + '<Pcode>' + Acode + '</Pcode>';
+    resultstr := resultstr + '</Request>';
+    msgCode := 'ValidateTicket';
+    resultstr := DHCWebInterface(PWideChar(msgCode), PWideChar(resultstr));
+    resultstr := LeftStr(resultstr, Length(resultstr) - 3);
+    resultstr := RightStr(resultstr, Length(resultstr) - 9);
+    ansistr := UTF8Encode(resultstr);
+    xml := LoadXMLData(ansistr);
+    if (xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['ResultCode'].text = '0') then
+    begin
+      Result := True;
+    end
+    else
+    begin
+      Result := False;
+    end;
+  except
+    Result := False;
+  end;
 end;
 
 end.

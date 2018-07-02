@@ -7,7 +7,7 @@ uses
   Dialogs, StdCtrls, ExtCtrls, DB, ADODB,HisEntity;
 
 type
-  TForm1 = class(TForm)
+  TWJZForm = class(TForm)
     btn_saveacv: TButton;
     btn_localDB: TButton;
     lbledtAntCVResultID: TLabeledEdit;
@@ -63,7 +63,7 @@ type
   end;
 
 var
-  Form1: TForm1;
+  WJZForm: TWJZForm;
   function  SaveAntCVResult(const Input: PWideChar): PWideChar; stdcall;external 'HISDHC.dll';
 
 implementation
@@ -74,7 +74,7 @@ uses
 
 {$R *.dfm}
 
-procedure TForm1.btn_saveacvClick(Sender: TObject);
+procedure TWJZForm.btn_saveacvClick(Sender: TObject);
 var
     data:TSaveAntCVResult;
     con:TADOConnection;
@@ -91,7 +91,7 @@ begin
      end; 
 end;
 
-function TForm1.getcon:TADOConnection;
+function TWJZForm.getcon:TADOConnection;
 var
   con:TADOConnection;
 begin
@@ -104,7 +104,7 @@ begin
     con := nil;
 end;
 
-function TForm1.getData:TSaveAntCVResult;
+function TWJZForm.getData:TSaveAntCVResult;
 var
     data:TSaveAntCVResult;
 begin
@@ -147,7 +147,7 @@ begin
     data:= nil;
 end;
 
-procedure TForm1.btn_localDBClick(Sender: TObject);
+procedure TWJZForm.btn_localDBClick(Sender: TObject);
 var
     data:TSaveAntCVResult;
     con:TADOConnection;
@@ -162,7 +162,7 @@ begin
 
 end;
 
-procedure TForm1.btn_DBTestClick(Sender: TObject);
+procedure TWJZForm.btn_DBTestClick(Sender: TObject);
 var
     con:TADOConnection;
 begin
@@ -178,7 +178,7 @@ begin
     con := nil;
 end;
 
-procedure TForm1.btn_sendXmlClick(Sender: TObject);
+procedure TWJZForm.btn_sendXmlClick(Sender: TObject);
 var
   xmlstr:WideString;
   resultstr:WideString;
