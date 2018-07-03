@@ -62,6 +62,7 @@ function SaveAntCVResult(const Input: PWideChar): PWideChar; stdcall; external '
 
 function DHCWebInterface(const Input: PWideChar; const Input1: PWideChar): PWideChar; stdcall; external 'HISDHC.dll';
 
+function RegisterDocument(const Input: PWideChar; const Input1: PWideChar): PWideChar; stdcall; external 'HISDHC.dll';
 { THisManager }
 
 class function THisManager.MBookedInfo(Abookedinfo: TBookedInfo): Boolean;
@@ -696,8 +697,9 @@ begin
   resultstr := resultstr + '</DiagnoseRowInfo>';
   resultstr := resultstr + '</BasicDataset>';
   try
-    msgCode := 'RegisterDocument';
-    resultstr := DHCWebInterface(PWideChar(msgCode), PWideChar(resultstr));
+    msgCode :=  ARegisterDocument.RegisterNo+','+ARegisterDocument.AdmNo+','+
+             ARegisterDocument.DocumentCode+','+ARegisterDocument.DocumentID;//'RegisterDocument';
+    resultstr := RegisterDocument(PWideChar(msgCode), PWideChar(resultstr));
     resultstr := LeftStr(resultstr, Length(resultstr) - 3);
     resultstr := RightStr(resultstr, Length(resultstr) - 9);
     ansistr := UTF8Encode(resultstr);
