@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls;
+  Dialogs, StdCtrls, ExtCtrls, StrUtils;
 
 type
   TLoginForm = class(TForm)
@@ -28,15 +28,60 @@ uses
 {$R *.dfm}
 
 procedure TLoginForm.btn_loginClick(Sender: TObject);
+var
+  i, pcount: Integer;
+  pcode, pticket, pinput: AnsiString;
+  plist: TStringList;
+  pcodelist: TStringList;
+  pticketlist: TStringList;
 begin
-  if (HisManager.THisManager.MValidateTicket('dzt_station_01',lbledt_ticket.Text, lbledt_code.Text)) then
+  pcount := ParamCount;
+  plist := TStringList.Create;
+  if pcount > 1 then
   begin
-    ShowMessage('登录成功');
+    //lbledt_input.Text := ParamStr(1);
+    pinput := ParamStr(1);
+    ExtractStrings(['&'], [' '], PChar(pinput), plist);
+    if plist.Count > 1 then
+    begin
+      ExtractStrings(['&'], [' '], PChar(plist[0]), pticketlist);
+      ExtractStrings(['&'], [' '], PChar(plist[1]), pcodelist);
+      if pticketlist[0] = 'ptickets' then
+      begin
+        lbledt_ticket.Text := pticketlist[1];
+      end
+      else
+      begin
+        lbledt_code.Text := pticketlist[1];
+      end;
+      if pcodelist[0] = 'pcode' then
+      begin
+        lbledt_code.Text := pcodelist[1];
+      end
+      else
+      begin
+        lbledt_ticket.Text := pcodelist[1];
+      end;
+
+      if (HisManager.THisManager.MValidateTicket('dzt_station_01', lbledt_ticket.Text, lbledt_code.Text).Sucess) then
+      begin
+        ShowMessage('登录成功');
+      end
+      else
+      begin
+        ShowMessage('登录失败');
+      end;
+    end
+    else
+    begin
+      ShowMessage('没有找到ticket');
+    end;
   end
   else
   begin
-    ShowMessage('登录失败');
+    ShowMessage('没有找到ticket');
   end;
+
 end;
 
 end.

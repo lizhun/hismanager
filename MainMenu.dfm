@@ -11,6 +11,7 @@ object MainForm: TMainForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object btn_wzj: TButton
@@ -39,5 +40,24 @@ object MainForm: TMainForm
     Caption = #27880#20876#25991#26723#27979#35797
     TabOrder = 2
     OnClick = btn_registerdocClick
+  end
+  object lbledt_input: TLabeledEdit
+    Left = 56
+    Top = 88
+    Width = 121
+    Height = 21
+    EditLabel.Width = 90
+    EditLabel.Height = 13
+    EditLabel.Caption = #31243#24207#21551#21160#21442#25968'      '
+    TabOrder = 3
+  end
+  object btn_open: TButton
+    Left = 200
+    Top = 88
+    Width = 75
+    Height = 25
+    Caption = #21333#28857#20256#21442
+    TabOrder = 4
+    OnClick = btn_openClick
   end
 end

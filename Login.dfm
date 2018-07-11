@@ -31,6 +31,7 @@ object LoginForm: TLoginForm
     EditLabel.Height = 13
     EditLabel.Caption = 'Ticket'
     TabOrder = 1
+    Visible = False
   end
   object lbledt_code: TLabeledEdit
     Left = 56
@@ -41,5 +42,6 @@ object LoginForm: TLoginForm
     EditLabel.Height = 13
     EditLabel.Caption = 'PCode'
     TabOrder = 2
+    Visible = False
   end
 end

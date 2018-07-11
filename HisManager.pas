@@ -29,7 +29,7 @@ type
     class function SaveAntCVResultToDb(con: TADOConnection; data: TSaveAntCVResult): Boolean; //保存危急值到数据库
     class function MMakeSaveAntCVResultStr(ASaveAntCVResult: TSaveAntCVResult): WideString;
     class function MRegisterDocument(ARegisterDocument: TRegisterDocument): Boolean;
-    class function MValidateTicket(const Asourcing: string;const Atickets: string; const Acode: string): Boolean;
+    class function MValidateTicket(const Asourcing: string; const Atickets: string; const Acode: string): TValidateTicketRes;
   end;
 
 implementation
@@ -697,8 +697,7 @@ begin
   resultstr := resultstr + '</DiagnoseRowInfo>';
   resultstr := resultstr + '</BasicDataset>';
   try
-    msgCode :=  ARegisterDocument.RegisterNo+','+ARegisterDocument.AdmNo+','+
-             ARegisterDocument.DocumentCode+','+ARegisterDocument.DocumentID;//'RegisterDocument';
+    msgCode := ARegisterDocument.RegisterNo + ',' + ARegisterDocument.AdmNo + ',' + ARegisterDocument.DocumentCode + ',' + ARegisterDocument.DocumentID; //'RegisterDocument';
     resultstr := RegisterDocument(PWideChar(msgCode), PWideChar(resultstr));
     resultstr := LeftStr(resultstr, Length(resultstr) - 3);
     resultstr := RightStr(resultstr, Length(resultstr) - 9);
@@ -717,16 +716,19 @@ begin
   end;
 end;
 
-class function THisManager.MValidateTicket(const Asourcing: string; const Atickets: string; const Acode: string): Boolean;
+class function THisManager.MValidateTicket(const Asourcing: string; const Atickets: string; const Acode: string): TValidateTicketRes;
 var
   resultstr: WideString;
   msgCode: WideString;
   xml: IXMLDocument;
   ansistr: string;
+  res: TValidateTicketRes;
 begin
+  res := TValidateTicketRes.Create;
+  res.Sucess := False;
   try
     resultstr := '<Request>';
-    resultstr := resultstr + '<SourceSystem>'+Asourcing+'</SourceSystem>';
+    resultstr := resultstr + '<SourceSystem>' + Asourcing + '</SourceSystem>';
     resultstr := resultstr + '<Ptickets>' + Atickets + '</Ptickets>';
     resultstr := resultstr + '<Pcode>' + Acode + '</Pcode>';
     resultstr := resultstr + '</Request>';
@@ -738,14 +740,17 @@ begin
     xml := LoadXMLData(ansistr);
     if (xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['ResultCode'].text = '0') then
     begin
-      Result := True;
+      res.Sucess := True;
+      res.DocName := xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['ResultContent'].text;
+      Result := res;
     end
     else
     begin
-      Result := False;
+
+      Result := res;
     end;
   except
-    Result := False;
+    Result := res;
   end;
 end;
 

@@ -307,6 +307,11 @@ type
   end;
 
   TArrayTPatOrd = array of TPatOrd;
+type
+  TValidateTicketRes = class
+  Sucess:Boolean;
+  DocName:string;
+  end;
 
 implementation
 
