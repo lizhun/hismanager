@@ -30,6 +30,7 @@ type
     class function MMakeSaveAntCVResultStr(ASaveAntCVResult: TSaveAntCVResult): WideString;
     class function MRegisterDocument(ARegisterDocument: TRegisterDocument): Boolean;
     class function MValidateTicket(const Asourcing: string; const Atickets: string; const Acode: string): TValidateTicketRes;
+    class function MGetValidateInfo: TValidateInfo;
   end;
 
 implementation
@@ -725,7 +726,7 @@ var
   res: TValidateTicketRes;
 begin
   res := TValidateTicketRes.Create;
-  res.Sucess := False;
+  res.CanLogin := False;
   try
     resultstr := '<Request>';
     resultstr := resultstr + '<SourceSystem>' + Asourcing + '</SourceSystem>';
@@ -740,8 +741,8 @@ begin
     xml := LoadXMLData(ansistr);
     if (xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['ResultCode'].text = '0') then
     begin
-      res.Sucess := True;
-      res.DocName := xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['ResultContent'].text;
+      res.CanLogin := True;
+      res.ResText := xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['ResultContent'].text;
       Result := res;
     end
     else
@@ -752,6 +753,58 @@ begin
   except
     Result := res;
   end;
+end;
+
+class function THisManager.MGetValidateInfo: TValidateInfo;
+var
+  validateInfo: TValidateInfo;
+  pcount: Integer;
+  pinput: string;
+  pinputlist, plist1, plist2: TStringList;
+begin
+  validateInfo := TValidateInfo.Create;
+  pcount := ParamCount;
+  pinputlist := TStringList.Create;
+  plist1 := TStringList.Create;
+  plist2 := TStringList.Create;
+  if ParamCount > 0 then
+  begin
+    pinput := ParamStr(1);
+    pinput := LowerCase(pinput);
+    ExtractStrings(['&'], [' '], PChar(pinput), pinputlist);
+    if pinputlist.Count > 1 then
+    begin
+      ExtractStrings(['='], [' '], PChar(pinputlist[0]), plist1);
+      ExtractStrings(['='], [' '], PChar(pinputlist[1]), plist2);
+      if plist1.Count > 1 then
+      begin
+        if Pos('pcode', plist1[0]) > 0 then
+        begin
+          validateInfo.Pcode := plist1[1];
+        end;
+        if Pos('ptickets', plist1[0]) > 0 then
+        begin
+          validateInfo.Ptickets := plist1[1];
+        end;
+      end;
+      if plist2.Count > 1 then
+      begin
+        if Pos('pcode', plist2[0]) > 0 then
+        begin
+          validateInfo.Pcode := plist2[1];
+        end;
+        if Pos('ptickets', plist2[0]) > 0 then
+        begin
+          validateInfo.Ptickets := plist2[1];
+        end;
+      end;
+    end;
+
+  end;
+  FreeAndNil(pinputlist);
+  FreeAndNil(plist1);
+  FreeAndNil(plist2);
+  Result := validateInfo;
 end;
 
 end.

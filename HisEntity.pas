@@ -307,13 +307,21 @@ type
   end;
 
   TArrayTPatOrd = array of TPatOrd;
+
 type
   TValidateTicketRes = class
-  Sucess:Boolean;
-  DocName:string;
+    CanLogin: Boolean;
+    ResText: string;
+  end;
+
+type
+  TValidateInfo = class
+    SourceSystem: string;
+    Ptickets: string;
+    Pcode: string;
   end;
 
 implementation
 
 end.
- 
+

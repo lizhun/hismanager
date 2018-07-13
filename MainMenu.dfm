@@ -44,20 +44,34 @@ object MainForm: TMainForm
   object lbledt_input: TLabeledEdit
     Left = 56
     Top = 88
-    Width = 121
+    Width = 569
     Height = 21
     EditLabel.Width = 90
     EditLabel.Height = 13
     EditLabel.Caption = #31243#24207#21551#21160#21442#25968'      '
     TabOrder = 3
+    Text = 
+      'openneijing:ptickets=ST-839-EAx12ugVQfn6F5vgKuBS-cas01.example.o' +
+      'rg&pcode=neijing'
+    Visible = False
   end
   object btn_open: TButton
-    Left = 200
-    Top = 88
+    Left = 672
+    Top = 72
     Width = 75
     Height = 25
     Caption = #21333#28857#20256#21442
     TabOrder = 4
+    Visible = False
     OnClick = btn_openClick
+  end
+  object btn1: TButton
+    Left = 776
+    Top = 56
+    Width = 75
+    Height = 25
+    Caption = 'btn1'
+    TabOrder = 5
+    OnClick = btn1Click
   end
 end
