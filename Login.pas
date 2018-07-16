@@ -30,19 +30,24 @@ procedure TLoginForm.btn_loginClick(Sender: TObject);
 var
   pcount: Integer;
   validateInfo: TValidateInfo;
+  resData: TValidateTicketRes;
 begin
   pcount := ParamCount;
   if pcount > 0 then
   begin
     validateInfo := THisManager.MGetValidateInfo;
-    if (HisManager.THisManager.MValidateTicket('dzt_station_01', validateInfo.Ptickets, validateInfo.Pcode).CanLogin) then
+    resData := HisManager.THisManager.MValidateTicket('dzt_station_01', validateInfo.Ptickets, validateInfo.Pcode);
+    if (resData.CanLogin) then
     begin
-      ShowMessage('登录成功');
+      ShowMessage('登录成功,医生工号：' + resData.ResText);
+
     end
     else
     begin
-      ShowMessage('登录失败');
+      ShowMessage('登录失败,错误消息:' + resData.ResText);
     end;
+    FreeAndNil(validateInfo);
+    FreeAndNil(resData);
   end
   else
   begin

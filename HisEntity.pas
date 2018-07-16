@@ -316,7 +316,6 @@ type
 
 type
   TValidateInfo = class
-    SourceSystem: string;
     Ptickets: string;
     Pcode: string;
   end;
