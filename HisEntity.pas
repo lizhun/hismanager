@@ -395,14 +395,14 @@ type
 
 type
   TRisTimeAxisReq = class
-    OrdRowID: string;
+    OrdRowID: string;    //多个医嘱号用@分隔
     StudyNo: string;
     DocCode: string;
     Doc: string;
-    StartDate: string;
-    StartTime: string;
-    EndDate: string;
-    EndTime: string;
+    StartDate: string;  //YYYY-MM-DD  StartDate+StartTime非空时，EndDate+ EndTime为空时，判定为检查开始；
+    StartTime: string;   //HH:MM:SS
+    EndDate: string;    //YYYY-MM-DD    StartDate+StartTime为空时，EndDate+ EndTime非空时，判定为检查结束；
+    EndTime: string;    //HH:MM:SS
   end;
 
 implementation

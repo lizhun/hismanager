@@ -30,9 +30,9 @@ type
     class function MMakeSaveAntCVResultStr(ASaveAntCVResult: TSaveAntCVResult): WideString;
     class function MRegisterDocument(ARegisterDocument: TRegisterDocument): Boolean;
     class function MValidateTicket(const Asourcing: string; const Atickets: string; const Acode: string): TValidateTicketRes;
-    class function MGetValidateInfo: TValidateInfo;
-    class function MGetAdmInfo(const admNo: string): TAdmRes;
-    class function MRisTimeAxis(const risTimeAxis: TRisTimeAxisReq): Boolean;
+    class function MGetValidateInfo: TValidateInfo;  //单点登录
+    class function MGetAdmInfo(const admNo: string): TAdmRes;  //获取就诊信息
+    class function MRisTimeAxis(const risTimeAxis: TRisTimeAxisReq): Boolean;  // 时间轴
   end;
 
 implementation

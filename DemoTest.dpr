@@ -7,7 +7,8 @@ uses
   HisManager in 'HisManager.pas',
   MainMenu in 'MainMenu.pas' {MainForm},
   Login in 'Login.pas' {LoginForm},
-  RegDoc in 'RegDoc.pas' {RegDocFrom};
+  RegDoc in 'RegDoc.pas' {RegDocFrom},
+  RisFormU in 'RisFormU.pas' {RisTimeForm};
 
 {$R *.res}
 
@@ -16,5 +17,6 @@ begin
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TLoginForm, LoginForm);
   Application.CreateForm(TRegDocFrom, RegDocFrom);
+  Application.CreateForm(TRisTimeForm, RisTimeForm);
   Application.Run;
 end.
