@@ -20,6 +20,7 @@ var
   RegDocFrom: TRegDocFrom;
 
 implementation
+
 uses
   HisManager;
 
@@ -29,25 +30,29 @@ procedure TRegDocFrom.btn_regClick(Sender: TObject);
 var
   data: TRegisterDocument;
   items: TArrayTDiagnoseRowInfo;
+  admRes: TAdmRes;
 begin
   data := TRegisterDocument.Create;
   //赋值处理...
-
-  SetLength(items, 2);
-  items[0] := TDiagnoseRowInfo.Create;
-  //赋值处理。。
-  items[1] := TDiagnoseRowInfo.Create;
-  //赋值处理。。。
-  data.DiagnoseRowInfo := items;
-  if (THisManager.MRegisterDocument(data)) then
+  admRes := THisManager.MGetAdmInfo('诊断号');
+  if Length(admRes.Diagnoses) > 0 then
   begin
-    ShowMessage('登录成功');
+    data.DiagnoseRowInfo := admRes.Diagnoses;
+    if (THisManager.MRegisterDocument(data)) then
+    begin
+      ShowMessage('成功');
+    end
+    else
+    begin
+      ShowMessage('失败');
+    end;
   end
   else
   begin
-    ShowMessage('登录失败');
+    ShowMessage('没有西医诊断信息，共享文档无法生成');
   end;
-
+  FreeAndNil(data);
+  FreeAndNil(admRes);
 end;
 
 end.

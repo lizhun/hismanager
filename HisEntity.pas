@@ -216,11 +216,14 @@ type
 
 type
   TDiagnoseRowInfo = class
-    DiagnoseCode: string;      //疾病诊断编码
-    DiagnoseDesc: string;      //疾病诊断描述
-    DiagnoseTypeCode: string;  //疾病诊断类型代码
-    DiagnoseTypeDesc: string;  //疾病诊断类型描述
-    DiagnoseDate: string;      //诊断日期
+    DiagnoseTypeCode: string;  //	诊断类型代码
+    DiagnoseTypeDesc: string;  //	诊断类型描述
+    DiagnoseCode: string;  //	诊断代码
+    DiagnoseDesc: string;  //	诊断名称
+    DiagUserCode: string;  //	诊断医生工号
+    DiagUserDesc: string;  //	诊断医生
+    DiagnoseDate: string;  //	诊断日期
+    DiagnoseTime: string;  //	诊断时间
   end;
 
   TArrayTDiagnoseRowInfo = array of TDiagnoseRowInfo;
@@ -303,7 +306,7 @@ type
     ZZ_Des: string;        // 症状描述
     ZZ_StopDate: string;    // 症状停止日期时间
     ZS: string;            // 主诉
-    DiagnoseRowInfo:TArrayTDiagnoseRowInfo //患者诊断信息数组
+    DiagnoseRowInfo:TArrayTDiagnoseRowInfo; //患者诊断信息数组
   end;
 
   TArrayTPatOrd = array of TPatOrd;
@@ -318,6 +321,88 @@ type
   TValidateInfo = class
     Ptickets: string;
     Pcode: string;
+  end;
+
+type
+  TAdmRes = class
+    AdmNo: string;  //	就诊号
+    AdmSerialNum: string;  //	就诊流水号
+    DocumentID: string;  //	病案号
+    PatRowID: string;  //	病人ROWID
+    RegisterNo: string;  //	登记号
+    AdmName: string;  //	就诊姓名
+    SexCode: string;  //	性别
+    Age: string;  //	年龄
+    Birthday: string;  //	出生日期
+    AdmHospID: string;  //	就诊院区
+    AdmHospCode: string;  //	就诊院区代码
+    AdmHospDesc: string;  //	就诊院区描述
+    AdmStatusCode: string;  //	就诊状态代码
+    AdmStatusDesc: string;  //	就诊状态描述
+    AdmTypeCode: string;  //	就诊类型代码
+    AdmTypeDesc: string;  //	就诊类型描述
+    FeeTypeRowID: string;  //	费别RowID
+    FeeTypeCode: string;  //	费别代码
+    FeeTypeDesc: string;  //	费别描述
+    AdmDate: string;  //	就诊日期
+    AdmTime: string;  //	就诊时间
+    InBedDate: string;  //	分床日期
+    InBedTime: string;  //	分床时间
+    AdmDoctorRowID: string;  //	就诊医生RowID（主治医生、入院医生）
+    AdmDoctorCode: string;  //	就诊医生代码（主治医生、入院医生）
+    AdmDoctorDesc: string;  //	就诊医生描述（主治医生、入院医生）
+    Height: string;  //	身高
+    Weigth: string;  //	体重
+    VisitNum: string;  //	住院次数
+    ResidentDays: string;  //	住院天数
+    DisDateMR: string;  //	出院日期(统计)
+    DisTimeMR: string;  //	出院时间(统计)
+    DisDateNurse: string;  //	出院日期(护士结算)
+    DisTimeNurse: string;  //	出院时间(护士结算)
+    DisDateDoctor: string;  //	出院日期(医生结算)
+    DisTimeDoctor: string;  //	出院时间(医生结算)
+    AdmDeptRowID: string;  //	入院（挂号）科室RowID
+    AdmDeptCode: string;  //	入院（挂号）科室代码
+    AdmDeptDesc: string;  //	入院（挂号）科室描述
+    AdmWardRowID: string;  //	入院病区RowID
+    AdmWardCode: string;  //	入院病区代码
+    AdmWardDesc: string;  //	入院病区描述
+    AdmRoomRowID: string;  //	入院房间RowID
+    AdmRoomCode: string;  //	入院房间代码
+    AdmRoomDesc: string;  //	入院房间描述
+    AdmBedRowID: string;  //	入院床号RowID
+    AdmBedNo: string;  //	入院床号
+    CurrentDetpRowID: string;  //	当前(出院)科室RowID
+    CurrentDetpCode: string;  //	当前(出院)科室代码
+    CurrentDetpDesc: string;  //	当前(出院)科室描述
+    CurrentWardRowID: string;  //	当前(出院)病区RowID
+    CurrentWardCode: string;  //	当前(出院)病区代码
+    CurrentWardDesc: string;  //	当前(出院)病区描述
+    CurrentRoomRowID: string;  //	当前(出院)房间RowID
+    CurrentRoomCode: string;  //	当前(出院)房间代码
+    CurrentRoomDesc: string;  //	当前(出院)房间描述
+    CurrentBedRowID: string;  //	当前(出院)床号RowID
+    CurrentBedNo: string;  //	当前(出院)床号
+    ClinicDisease: string;  //	临床病史
+    OperationInfo: string;  //	手术信息
+    OtherInfo: string;  //	其他信息
+    DischCondit: string;  //	出院情况
+    PhyAddress: string;  //	病区物理地址
+    TimeRangeCode: string;  //	就诊时段
+    RegfeeNo: string;  //	就诊序号
+    Diagnoses: TArrayTDiagnoseRowInfo;
+  end;
+
+type
+  TRisTimeAxisReq = class
+    OrdRowID: string;
+    StudyNo: string;
+    DocCode: string;
+    Doc: string;
+    StartDate: string;
+    StartTime: string;
+    EndDate: string;
+    EndTime: string;
   end;
 
 implementation

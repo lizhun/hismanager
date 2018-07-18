@@ -31,6 +31,8 @@ type
     class function MRegisterDocument(ARegisterDocument: TRegisterDocument): Boolean;
     class function MValidateTicket(const Asourcing: string; const Atickets: string; const Acode: string): TValidateTicketRes;
     class function MGetValidateInfo: TValidateInfo;
+    class function MGetAdmInfo(const admNo: string): TAdmRes;
+    class function MRisTimeAxis(const risTimeAxis: TRisTimeAxisReq): Boolean;
   end;
 
 implementation
@@ -608,6 +610,7 @@ var
   ansistr: string;
   len: Integer;
   i: Integer;
+  admInfo: TAdmRes;
 begin
 
   resultstr := '<BasicDataset code="HDSD00.05" displayName="检查报告" codeSystem="WSXXX-2012" codeSystemName="电子病历基本数据集" version="1.0">';
@@ -715,6 +718,7 @@ begin
   except
     Result := False;
   end;
+
 end;
 
 class function THisManager.MValidateTicket(const Asourcing: string; const Atickets: string; const Acode: string): TValidateTicketRes;
@@ -770,7 +774,7 @@ begin
   if ParamCount > 0 then
   begin
     pinput := ParamStr(1);
-    pinput := LowerCase(pinput);
+    //pinput := LowerCase(pinput);
     ExtractStrings(['&'], [' '], PChar(pinput), pinputlist);
     if pinputlist.Count > 1 then
     begin
@@ -805,6 +809,156 @@ begin
   FreeAndNil(plist1);
   FreeAndNil(plist2);
   Result := validateInfo;
+end;
+
+class function THisManager.MGetAdmInfo(const admNo: string): TAdmRes;
+var
+  resultstr: WideString;
+  msgCode: WideString;
+  xml: IXMLDocument;
+  ansistr: string;
+  res: TAdmRes;
+  resitems: TArrayTDiagnoseRowInfo;
+  admInfo: IXMLNode;
+  itemnode: IXMLNode;
+  i, len: Integer;
+begin
+  res := TAdmRes.Create;
+  try
+    msgCode := 'S1001';
+    resultstr := DHCWebInterface(PWideChar(msgCode), PWideChar(admNo));
+    resultstr := LeftStr(resultstr, Length(resultstr) - 3);
+    resultstr := RightStr(resultstr, Length(resultstr) - 9);
+    ansistr := UTF8Encode(resultstr);
+    xml := LoadXMLData(ansistr);
+    if (xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['Body'].ChildNodes.Nodes['ResultCode'].text = '0') then
+    begin
+      admInfo := xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['Body'].ChildNodes.Nodes['AdmInfo'];
+      res.AdmNo := admInfo.ChildNodes.Nodes['AdmNo'].Text;
+      res.AdmSerialNum := admInfo.ChildNodes.Nodes['AdmSerialNum'].Text;
+      res.DocumentID := admInfo.ChildNodes.Nodes['DocumentID'].Text;
+      res.PatRowID := admInfo.ChildNodes.Nodes['PatRowID'].Text;
+      res.RegisterNo := admInfo.ChildNodes.Nodes['RegisterNo'].Text;
+      res.AdmName := admInfo.ChildNodes.Nodes['AdmName'].Text;
+      res.SexCode := admInfo.ChildNodes.Nodes['SexCode'].Text;
+      res.Age := admInfo.ChildNodes.Nodes['Age'].Text;
+      res.Birthday := admInfo.ChildNodes.Nodes['Birthday'].Text;
+      res.AdmHospID := admInfo.ChildNodes.Nodes['AdmHospID'].Text;
+      res.AdmHospCode := admInfo.ChildNodes.Nodes['AdmHospCode'].Text;
+      res.AdmHospDesc := admInfo.ChildNodes.Nodes['AdmHospDesc'].Text;
+      res.AdmStatusCode := admInfo.ChildNodes.Nodes['AdmStatusCode'].Text;
+      res.AdmStatusDesc := admInfo.ChildNodes.Nodes['AdmStatusDesc'].Text;
+      res.AdmTypeCode := admInfo.ChildNodes.Nodes['AdmTypeCode'].Text;
+      res.AdmTypeDesc := admInfo.ChildNodes.Nodes['AdmTypeDesc'].Text;
+      res.FeeTypeRowID := admInfo.ChildNodes.Nodes['FeeTypeRowID'].Text;
+      res.FeeTypeCode := admInfo.ChildNodes.Nodes['FeeTypeCode'].Text;
+      res.FeeTypeDesc := admInfo.ChildNodes.Nodes['FeeTypeDesc'].Text;
+      res.AdmDate := admInfo.ChildNodes.Nodes['AdmDate'].Text;
+      res.AdmTime := admInfo.ChildNodes.Nodes['AdmTime'].Text;
+      res.InBedDate := admInfo.ChildNodes.Nodes['InBedDate'].Text;
+      res.InBedTime := admInfo.ChildNodes.Nodes['InBedTime'].Text;
+      res.AdmDoctorRowID := admInfo.ChildNodes.Nodes['AdmDoctorRowID'].Text;
+      res.AdmDoctorCode := admInfo.ChildNodes.Nodes['AdmDoctorCode'].Text;
+      res.AdmDoctorDesc := admInfo.ChildNodes.Nodes['AdmDoctorDesc'].Text;
+      res.Height := admInfo.ChildNodes.Nodes['Height'].Text;
+      res.Weigth := admInfo.ChildNodes.Nodes['Weigth'].Text;
+      res.VisitNum := admInfo.ChildNodes.Nodes['VisitNum'].Text;
+      res.ResidentDays := admInfo.ChildNodes.Nodes['ResidentDays'].Text;
+      res.DisDateMR := admInfo.ChildNodes.Nodes['DisDateMR'].Text;
+      res.DisTimeMR := admInfo.ChildNodes.Nodes['DisTimeMR'].Text;
+      res.DisDateNurse := admInfo.ChildNodes.Nodes['DisDateNurse'].Text;
+      res.DisTimeNurse := admInfo.ChildNodes.Nodes['DisTimeNurse'].Text;
+      res.DisDateDoctor := admInfo.ChildNodes.Nodes['DisDateDoctor'].Text;
+      res.DisTimeDoctor := admInfo.ChildNodes.Nodes['DisTimeDoctor'].Text;
+      res.AdmDeptRowID := admInfo.ChildNodes.Nodes['AdmDeptRowID'].Text;
+      res.AdmDeptCode := admInfo.ChildNodes.Nodes['AdmDeptCode'].Text;
+      res.AdmDeptDesc := admInfo.ChildNodes.Nodes['AdmDeptDesc'].Text;
+      res.AdmWardRowID := admInfo.ChildNodes.Nodes['AdmWardRowID'].Text;
+      res.AdmWardCode := admInfo.ChildNodes.Nodes['AdmWardCode'].Text;
+      res.AdmWardDesc := admInfo.ChildNodes.Nodes['AdmWardDesc'].Text;
+      res.AdmRoomRowID := admInfo.ChildNodes.Nodes['AdmRoomRowID'].Text;
+      res.AdmRoomCode := admInfo.ChildNodes.Nodes['AdmRoomCode'].Text;
+      res.AdmRoomDesc := admInfo.ChildNodes.Nodes['AdmRoomDesc'].Text;
+      res.AdmBedRowID := admInfo.ChildNodes.Nodes['AdmBedRowID'].Text;
+      res.AdmBedNo := admInfo.ChildNodes.Nodes['AdmBedNo'].Text;
+      res.CurrentDetpRowID := admInfo.ChildNodes.Nodes['CurrentDetpRowID'].Text;
+      res.CurrentDetpCode := admInfo.ChildNodes.Nodes['CurrentDetpCode'].Text;
+      res.CurrentDetpDesc := admInfo.ChildNodes.Nodes['CurrentDetpDesc'].Text;
+      res.CurrentWardRowID := admInfo.ChildNodes.Nodes['CurrentWardRowID'].Text;
+      res.CurrentWardCode := admInfo.ChildNodes.Nodes['CurrentWardCode'].Text;
+      res.CurrentWardDesc := admInfo.ChildNodes.Nodes['CurrentWardDesc'].Text;
+      res.CurrentRoomRowID := admInfo.ChildNodes.Nodes['CurrentRoomRowID'].Text;
+      res.CurrentRoomCode := admInfo.ChildNodes.Nodes['CurrentRoomCode'].Text;
+      res.CurrentRoomDesc := admInfo.ChildNodes.Nodes['CurrentRoomDesc'].Text;
+      res.CurrentBedRowID := admInfo.ChildNodes.Nodes['CurrentBedRowID'].Text;
+      res.CurrentBedNo := admInfo.ChildNodes.Nodes['CurrentBedNo'].Text;
+      res.ClinicDisease := admInfo.ChildNodes.Nodes['ClinicDisease'].Text;
+      res.OperationInfo := admInfo.ChildNodes.Nodes['OperationInfo'].Text;
+      res.OtherInfo := admInfo.ChildNodes.Nodes['OtherInfo'].Text;
+      res.DischCondit := admInfo.ChildNodes.Nodes['DischCondit'].Text;
+      res.PhyAddress := admInfo.ChildNodes.Nodes['PhyAddress'].Text;
+      res.TimeRangeCode := admInfo.ChildNodes.Nodes['TimeRangeCode'].Text;
+      res.RegfeeNo := admInfo.ChildNodes.Nodes['RegfeeNo'].Text;
+      len := admInfo.ChildNodes.Nodes['Diagnoses'].ChildNodes.Count;
+      if len > 0 then
+      begin
+        SetLength(resitems, len);
+        for i := 0 to len - 1 do
+        begin
+          resitems[i] := TDiagnoseRowInfo.Create;
+          itemnode := admInfo.ChildNodes.Nodes['Diagnoses'].ChildNodes[i];
+          resitems[i].DiagnoseTypeCode := itemnode.ChildNodes.Nodes['DiagnoseTypeCode'].Text;
+          resitems[i].DiagnoseTypeDesc := itemnode.ChildNodes.Nodes['DiagnoseTypeDesc'].Text;
+          resitems[i].DiagnoseCode := itemnode.ChildNodes.Nodes['DiagnoseCode'].Text;
+          resitems[i].DiagnoseDesc := itemnode.ChildNodes.Nodes['DiagnoseDesc'].Text;
+          resitems[i].DiagUserCode := itemnode.ChildNodes.Nodes['DiagUserCode'].Text;
+          resitems[i].DiagUserDesc := itemnode.ChildNodes.Nodes['DiagUserDesc'].Text;
+          resitems[i].DiagnoseDate := itemnode.ChildNodes.Nodes['DiagnoseDate'].Text;
+          resitems[i].DiagnoseTime := itemnode.ChildNodes.Nodes['DiagnoseTime'].Text;
+        end;
+      end;
+    end;
+    Result := res;
+  except
+    Result := res;
+  end;
+end;
+
+class function THisManager.MRisTimeAxis(const risTimeAxis: TRisTimeAxisReq): Boolean;
+var
+  resultstr: WideString;
+  xml: IXMLDocument;
+  ansistr: string;
+  msgCode: WideString;
+begin
+  try
+    msgCode := 'RisTimeAxis';
+    resultstr := '<Request>';
+    resultstr := resultstr + '<OrdRowID>' + risTimeAxis.OrdRowID + '</OrdRowID>';
+    resultstr := resultstr + '<StudyNo>' + risTimeAxis.StudyNo + '</StudyNo>';
+    resultstr := resultstr + '<DocCode>' + risTimeAxis.DocCode + '</DocCode>';
+    resultstr := resultstr + '<Doc>' + risTimeAxis.Doc + '</Doc>';
+    resultstr := resultstr + '<StartDate>' + risTimeAxis.StartDate + '</StartDate>';
+    resultstr := resultstr + '<StartTime>' + risTimeAxis.StartTime + '</StartTime>';
+    resultstr := resultstr + '<EndDate>' + risTimeAxis.EndDate + '</EndDate>';
+    resultstr := resultstr + '<EndTime>' + risTimeAxis.EndTime + '</EndTime>';
+    resultstr := resultstr + '</Request>';
+    resultstr := DHCWebInterface(PWideChar(msgCode), PWideChar(resultstr));
+    resultstr := LeftStr(resultstr, Length(resultstr) - 3);
+    resultstr := RightStr(resultstr, Length(resultstr) - 9);
+    ansistr := UTF8Encode(resultstr);
+    xml := LoadXMLData(ansistr);
+    if (xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['ResultCode'].text = '0') then
+    begin
+      Result := True;
+    end
+    else
+    begin
+      Result := False;
+    end
+  except
+    Result := False;
+  end;
 end;
 
 end.
