@@ -33,6 +33,7 @@ var
   admRes: TAdmRes;
 begin
   data := TRegisterDocument.Create;
+  ShowMessage(IntToStr(Length(data.DiagnoseRowInfo)));
   //¸³Öµ´¦Àí...
   admRes := THisManager.MGetAdmInfo('Õï¶ÏºÅ');
   if Length(admRes.Diagnoses) > 0 then

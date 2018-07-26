@@ -811,6 +811,20 @@ begin
   Result := validateInfo;
 end;
 
+function AnsiToWide(const S: AnsiString): WideString;
+var
+  len: integer;
+  ws: WideString;
+begin
+  Result := '';
+  if (Length(S) = 0) then
+    exit;
+  len := MultiByteToWideChar(CP_ACP, 0, PChar(S), -1, nil, 0);
+  SetLength(ws, len);
+  MultiByteToWideChar(CP_ACP, 0, PChar(S), -1, PWideChar(ws), len);
+  Result := ws;
+end;
+
 class function THisManager.MGetAdmInfo(const admNo: string): TAdmRes;
 var
   resultstr: WideString;
@@ -826,7 +840,7 @@ begin
   res := TAdmRes.Create;
   try
     msgCode := 'S1001';
-    resultstr := DHCWebInterface(PWideChar(msgCode), PWideChar(admNo));
+    resultstr := DHCWebInterface(PWideChar(msgCode), PWideChar(AnsiToWide(admNo)));
     resultstr := LeftStr(resultstr, Length(resultstr) - 3);
     resultstr := RightStr(resultstr, Length(resultstr) - 9);
     ansistr := UTF8Encode(resultstr);
@@ -916,6 +930,7 @@ begin
           resitems[i].DiagnoseDate := itemnode.ChildNodes.Nodes['DiagnoseDate'].Text;
           resitems[i].DiagnoseTime := itemnode.ChildNodes.Nodes['DiagnoseTime'].Text;
         end;
+        res.Diagnoses := resitems;
       end;
     end;
     Result := res;
