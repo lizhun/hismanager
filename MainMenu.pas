@@ -16,12 +16,14 @@ type
     btn_risTimeaxis: TButton;
     btn1: TButton;
     mmo1: TMemo;
+    btn_sendappbill: TButton;
     procedure btn_wzjClick(Sender: TObject);
     procedure btn_loginClick(Sender: TObject);
     procedure btn_registerdocClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btn_risTimeaxisClick(Sender: TObject);
     procedure btn1Click(Sender: TObject);
+    procedure btn_sendappbillClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -34,7 +36,7 @@ var
 implementation
 
 uses
-  main, Login, RegDoc, RisFormU;
+  main, Login, RegDoc, RisFormU, SendAppDataU;
 
 {$R *.dfm}
 
@@ -196,13 +198,23 @@ begin
           resitems[i].DiagnoseDate := itemnode.ChildNodes.Nodes['DiagnoseDate'].Text;
           resitems[i].DiagnoseTime := itemnode.ChildNodes.Nodes['DiagnoseTime'].Text;
         end;
-         res.Diagnoses := resitems;
+        res.Diagnoses := resitems;
       end;
     end;
     showmessage(inttostr(length(res.Diagnoses)));
   except
 
   end;
+end;
+
+procedure TMainForm.btn_sendappbillClick(Sender: TObject);
+var
+  form: Tfrm_SendAppData;
+begin
+  form := Tfrm_SendAppData.Create(nil);
+  form.ShowModal;
+  FreeAndNil(form);
+
 end;
 
 end.

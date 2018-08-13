@@ -61,8 +61,8 @@ object MainForm: TMainForm
     OnClick = btn_risTimeaxisClick
   end
   object btn1: TButton
-    Left = 640
-    Top = 48
+    Left = 992
+    Top = 312
     Width = 75
     Height = 25
     Caption = 'btn1'
@@ -235,5 +235,14 @@ object MainForm: TMainForm
       '  </Body>'
       '</Response>')
     TabOrder = 6
+  end
+  object btn_sendappbill: TButton
+    Left = 568
+    Top = 24
+    Width = 113
+    Height = 25
+    Caption = #21457#36865#21307#22065#20449#24687
+    TabOrder = 7
+    OnClick = btn_sendappbillClick
   end
 end

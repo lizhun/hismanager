@@ -33,6 +33,7 @@ type
     class function MGetValidateInfo: TValidateInfo;  //单点登录
     class function MGetAdmInfo(const admNo: string): TAdmRes;  //获取就诊信息
     class function MRisTimeAxis(const risTimeAxis: TRisTimeAxisReq): Boolean;  // 时间轴
+    class function MSendAppBill(const data: TSendAppBillReq): Boolean;
   end;
 
 implementation
@@ -958,6 +959,110 @@ begin
     resultstr := resultstr + '<EndDate>' + risTimeAxis.EndDate + '</EndDate>';
     resultstr := resultstr + '<EndTime>' + risTimeAxis.EndTime + '</EndTime>';
     resultstr := resultstr + '</Request>';
+    resultstr := DHCWebInterface(PWideChar(msgCode), PWideChar(resultstr));
+    resultstr := LeftStr(resultstr, Length(resultstr) - 3);
+    resultstr := RightStr(resultstr, Length(resultstr) - 9);
+    ansistr := UTF8Encode(resultstr);
+    xml := LoadXMLData(ansistr);
+    if (xml.ChildNodes.Nodes['Response'].ChildNodes.Nodes['ResultCode'].text = '0') then
+    begin
+      Result := True;
+    end
+    else
+    begin
+      Result := False;
+    end
+  except
+    Result := False;
+  end;
+end;
+
+class function THisManager.MSendAppBill(const data: TSendAppBillReq): Boolean;
+var
+  resultstr: WideString;
+  xml: IXMLDocument;
+  ansistr: string;
+  msgCode: WideString;
+begin
+  try
+    msgCode := 'SendAppBill';
+    resultstr := '<Request><SendAppBill>';
+    resultstr := resultstr + '<RegNo >' + data.RegNo + '</RegNo >';
+    resultstr := resultstr + '<CardNo>' + data.CardNo + '</CardNo>';
+    resultstr := resultstr + '<Name >' + data.Name + '</Name >';
+    resultstr := resultstr + '<SexCode>' + data.SexCode + '</SexCode>';
+    resultstr := resultstr + '<Sex >' + data.Sex + '</Sex >';
+    resultstr := resultstr + '<Age >' + data.Age + '</Age >';
+    resultstr := resultstr + '<BirthDay>' + data.BirthDay + '</BirthDay>';
+    resultstr := resultstr + '<Marry >' + data.Marry + '</Marry >';
+    resultstr := resultstr + '<Address >' + data.Address + '</Address >';
+    resultstr := resultstr + '<Telephone >' + data.Telephone + '</Telephone >';
+    resultstr := resultstr + '<CredentialNo>' + data.CredentialNo + '</CredentialNo>';
+    resultstr := resultstr + '<CredentialType>' + data.CredentialType + '</CredentialType>';
+    resultstr := resultstr + '<NationCode>' + data.NationCode + '</NationCode>';
+    resultstr := resultstr + '<Nation >' + data.Nation + '</Nation >';
+    resultstr := resultstr + '<OccupationCode>' + data.OccupationCode + '</OccupationCode>';
+    resultstr := resultstr + '<Occupation>' + data.Occupation + '</Occupation>';
+    resultstr := resultstr + '<DocumentID>' + data.DocumentID + '</DocumentID>';
+    resultstr := resultstr + '<InsuranceNo>' + data.InsuranceNo + '</InsuranceNo>';
+    resultstr := resultstr + '<AdmType>' + data.AdmType + '</AdmType>';
+    resultstr := resultstr + '<AdmNo>' + data.AdmNo + '</AdmNo>';
+    resultstr := resultstr + '<AdmSerialNum>' + data.AdmSerialNum + '</AdmSerialNum>';
+    resultstr := resultstr + '<FeeType >' + data.FeeType + '</FeeType >';
+    resultstr := resultstr + '<WardCode>' + data.WardCode + '</WardCode>';
+    resultstr := resultstr + '<Ward >' + data.Ward + '</Ward >';
+    resultstr := resultstr + '<RoomCode>' + data.RoomCode + '</RoomCode>';
+    resultstr := resultstr + '<Room>' + data.Room + '</Room>';
+    resultstr := resultstr + '<BedNo>' + data.BedNo + '</BedNo>';
+    resultstr := resultstr + '<ClinicDiagnose >' + data.ClinicDiagnose + '</ClinicDiagnose >';
+    resultstr := resultstr + '<ClinicDisease >' + data.ClinicDisease + '</ClinicDisease >';
+    resultstr := resultstr + '<OperationInfo >' + data.OperationInfo + '</OperationInfo >';
+    resultstr := resultstr + '<OtherInfo >' + data.OtherInfo + '</OtherInfo >';
+    resultstr := resultstr + '<AdmDocRowID>' + data.AdmDocRowID + '</AdmDocRowID>';
+    resultstr := resultstr + '<AdmDocCode>' + data.AdmDocCode + '</AdmDocCode>';
+    resultstr := resultstr + '<AdmDoc>' + data.AdmDoc + '</AdmDoc>';
+    resultstr := resultstr + '<OrdRowID>' + data.OrdRowID + '</OrdRowID>';
+    resultstr := resultstr + '<ArcimCode>' + data.ArcimCode + '</ArcimCode>';
+    resultstr := resultstr + '<OrdName >' + data.OrdName + '</OrdName >';
+    resultstr := resultstr + '<OrdPrice>' + data.OrdPrice + '</OrdPrice>';
+    resultstr := resultstr + '<OrdBillStatus>' + data.OrdBillStatus + '</OrdBillStatus>';
+    resultstr := resultstr + '<OrdPriorityCode>' + data.OrdPriorityCode + '</OrdPriorityCode>';
+    resultstr := resultstr + '<OrdPriority>' + data.OrdPriority + '</OrdPriority>';
+    resultstr := resultstr + '<OrdHospital >' + data.OrdHospital + '</OrdHospital >';
+    resultstr := resultstr + '<OrdHospitalCode>' + data.OrdHospitalCode + '</OrdHospitalCode>';
+    resultstr := resultstr + '<OrdExeHospital >' + data.OrdExeHospital + '</OrdExeHospital >';
+    resultstr := resultstr + '<OrdExeHospitalCode>' + data.OrdExeHospitalCode + '</OrdExeHospitalCode>';
+    resultstr := resultstr + '<ARCItemCat>' + data.ARCItemCat + '</ARCItemCat>';
+    resultstr := resultstr + '<ARCItemCatCode>' + data.ARCItemCatCode + '</ARCItemCatCode>';
+    resultstr := resultstr + '<OECOrderCategory>' + data.OECOrderCategory + '</OECOrderCategory>';
+    resultstr := resultstr + '<OECOrderCategoryCode>' + data.OECOrderCategoryCode + '</OECOrderCategoryCode>';
+    resultstr := resultstr + '<OrdLocCode>' + data.OrdLocCode + '</OrdLocCode>';
+    resultstr := resultstr + '<OrdLoc >' + data.OrdLoc + '</OrdLoc >';
+    resultstr := resultstr + '<OrdDoctorCode>' + data.OrdDoctorCode + '</OrdDoctorCode>';
+    resultstr := resultstr + '<OrdDoctor >' + data.OrdDoctor + '</OrdDoctor >';
+    resultstr := resultstr + '<OrdDate >' + data.OrdDate + '</OrdDate >';
+    resultstr := resultstr + '<OrdTime >' + data.OrdTime + '</OrdTime >';
+    resultstr := resultstr + '<OrdExeLocCode>' + data.OrdExeLocCode + '</OrdExeLocCode>';
+    resultstr := resultstr + '<OrdExeLoc >' + data.OrdExeLoc + '</OrdExeLoc >';
+    resultstr := resultstr + '<SampleCode>' + data.SampleCode + '</SampleCode>';
+    resultstr := resultstr + '<SampleName >' + data.SampleName + '</SampleName >';
+    resultstr := resultstr + '<SendFlag>' + data.SendFlag + '</SendFlag>';
+    resultstr := resultstr + '<NoteInfo>' + data.NoteInfo + '</NoteInfo>';
+    resultstr := resultstr + '<Position>' + data.Position + '</Position>';
+    resultstr := resultstr + '<Purpose>' + data.Purpose + '</Purpose>';
+    resultstr := resultstr + '<CurCase>' + data.CurCase + '</CurCase>';
+    resultstr := resultstr + '<Destination>' + data.Destination + '</Destination>';
+    resultstr := resultstr + '<AutoFlag>' + data.AutoFlag + '</AutoFlag>';
+    resultstr := resultstr + '<BookDate>' + data.BookDate + '</BookDate>';
+    resultstr := resultstr + '<BookTime>' + data.BookTime + '</BookTime>';
+    resultstr := resultstr + '<PhyAddress>' + data.PhyAddress + '</PhyAddress>';
+    resultstr := resultstr + '<SpecialMarket>' + data.SpecialMarket + '</SpecialMarket>';
+    resultstr := resultstr + '<SpecialPerson>' + data.SpecialPerson + '</SpecialPerson>';
+    resultstr := resultstr + '<SpecialDate>' + data.SpecialDate + '</SpecialDate>';
+    resultstr := resultstr + '<StopDocCode>' + data.StopDocCode + '</StopDocCode>';
+    resultstr := resultstr + '<StopDocDesc>' + data.StopDocDesc + '</StopDocDesc>';
+    resultstr := resultstr + '<Modality>' + data.Modality + '</Modality>';
+    resultstr := resultstr + '</SendAppBill></Request>';
     resultstr := DHCWebInterface(PWideChar(msgCode), PWideChar(resultstr));
     resultstr := LeftStr(resultstr, Length(resultstr) - 3);
     resultstr := RightStr(resultstr, Length(resultstr) - 9);

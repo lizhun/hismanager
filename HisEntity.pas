@@ -306,7 +306,7 @@ type
     ZZ_Des: string;        // 症状描述
     ZZ_StopDate: string;    // 症状停止日期时间
     ZS: string;            // 主诉
-    DiagnoseRowInfo:TArrayTDiagnoseRowInfo; //患者诊断信息数组
+    DiagnoseRowInfo: TArrayTDiagnoseRowInfo; //患者诊断信息数组
   end;
 
   TArrayTPatOrd = array of TPatOrd;
@@ -403,6 +403,85 @@ type
     StartTime: string;   //HH:MM:SS
     EndDate: string;    //YYYY-MM-DD    StartDate+StartTime为空时，EndDate+ EndTime非空时，判定为检查结束；
     EndTime: string;    //HH:MM:SS
+  end;
+
+type
+  TSendAppBillReq = class
+    RegNo: string;  //登记号 1301
+    CardNo: string;  //卡号123121
+    Name: string;  //姓名 张三
+    SexCode: string;  //性别代码M
+    Sex: string;  //性别 男
+    Age: string;  //年龄 N岁N月N天
+    BirthDay: string;  //出生日期 YYYY-MM-DD
+    Marry: string;  //婚姻 （已婚/未婚）
+    Address: string;  //地址 海淀区中关村知春路45号
+    Telephone: string;  //电话 13423455322
+    CredentialNo: string;  //证件号 3.24242E+20
+    CredentialType: string;  //证件类型
+    NationCode: string;  //民族代码____1
+    Nation: string;  //民族 ____汉族
+    OccupationCode: string;  //职业代码____2
+    Occupation: string;  //职业 ____建筑工人
+    DocumentID: string;  //病案号____也称住院号，限住院病人
+    InsuranceNo: string;  //医保号 ____
+    AdmType: string;  //就诊类别____参见5.2
+    AdmNo: string;  //就诊ID ____2344
+    AdmSerialNum: string;  //就诊流水号 ____OP00000023
+    FeeType: string;  //费别____（医保、自费）
+    WardCode: string;  //病区代码____2453
+    Ward: string;  //病区 ____神经内科病区
+    RoomCode: string;  //房间代码____中西医一科11
+    Room: string;  //房间号____中西医一科11
+    BedNo: string;  //床号 ____1101床
+    ClinicDiagnose: string;  //临床诊断 ____
+    ClinicDisease: string;  //临床病史 ____
+    OperationInfo: string;  //手术资料 ____
+    OtherInfo: string;  //其他信息____（如月经等，主要是申请单上的其他内容）
+    AdmDocRowID: string;  //就诊医生指针____
+    AdmDocCode: string;  //就诊医生代码____
+    AdmDoc: string;  //就诊医生____
+    OrdRowID: string;  //医嘱号____234_13
+    ArcimCode: string;  //医嘱项目代码____
+    OrdName: string;  //医嘱名称 ____胸部透射
+    OrdPrice: string;  //医嘱价格____234.23
+    OrdBillStatus: string;  //收费状态____参见5.3
+    OrdPriorityCode: string;  //医嘱类别代码____N
+    OrdPriority: string;  //医嘱类别____即刻
+    OrdHospital: string;  //开单医院 ____"本院"
+    OrdHospitalCode: string;  //开单医院代码____
+    OrdExeHospital: string;  //执行医院____
+    OrdExeHospitalCode: string;  //执行医院代码____
+    ARCItemCat: string;  //医嘱子类____
+    ARCItemCatCode: string;  //医嘱子类代码____
+    OECOrderCategory: string;  //医嘱大类____
+    OECOrderCategoryCode: string;  //医嘱大类代码____
+    OrdLocCode: string;  //开单科室代码____343
+    OrdLoc: string;  //开单科室 ____产科
+    OrdDoctorCode: string;  //开单医生代码____P3244
+    OrdDoctor: string;  //开单医生 ____李医生
+    OrdDate: string;  //开单日期 ____YYYY-MM-DD
+    OrdTime: string;  //开单时间 ____HH:MM:SS
+    OrdExeLocCode: string;  //执行科室代码____532
+    OrdExeLoc: string;  //执行科室 ____超声科
+    SampleCode: string;  //标本代码____R
+    SampleName: string;  //标本名称 ____
+    SendFlag: string;  //发送标志____NW—新增申请单____CA—取消申请单
+    NoteInfo: string;  //备注____
+    Position: string;  //部位____
+    Purpose: string;  //检查目的____
+    CurCase: string;  //当前情况____
+    Destination: string;  //发送位置____
+    AutoFlag: string;  //自动预约标志____
+    BookDate: string;  //预约日期____
+    BookTime: string;  //预约时间____
+    PhyAddress: string;  //病人所在地址____
+    SpecialMarket: string;  //特殊标志____
+    SpecialPerson: string;  //期望执行医生____
+    SpecialDate: string;  //期望执行日期____
+    StopDocCode: string;  //停医嘱医生代码____
+    StopDocDesc: string;  //停医嘱医生____
+    Modality: string;  //设备名称____具体某一台设备的名称，比如CR-1
   end;
 
 implementation
